@@ -6,7 +6,7 @@ from game_function import check_KEY
 class PlaneGame(object):
     '''主游戏类'''
 
-    def __init__(self, pygame, SCREEN_RECT):
+    def __init__(self):
         # 创建游戏窗口
         self.screen = pygame.display.set_mode((SCREEN_RECT.size))
         #设置窗口的标题
@@ -22,7 +22,7 @@ class PlaneGame(object):
         pygame.init()
         while True:
             # 1. 设置刷新帧率
-            # self.clock.tick(100)
+            self.clock.tick(60)
 
             # 2. 事件监听
             self.__check_event()
@@ -47,15 +47,21 @@ class PlaneGame(object):
             
     def __check_collide(self):
         '''碰撞检测'''
-        pass
+        #子弹碰撞敌人
+        pygame.sprite.groupcollide(self.bullet_group, self.enemy_group, True, True)
+
+        enemys =  pygame.sprite.spritecollide(self.hero, self.enemy_group, True,)
+        if len(enemys) > 0 :
+            self.hero.kill()
+            exit()
+
+
 
     def __update_sprites(self):
         '''更新精灵组'''
         for group in [self.back_group,self.hero_group,self.bullet_group,self.enemy_group]:
         	group.draw(self.screen)
         	group.update()
-        self.hero.update()
-        print(self.enemy_group)
 
 
     @classmethod
@@ -69,15 +75,15 @@ class PlaneGame(object):
         bg2 = Background(True)
         self.back_group = pygame.sprite.Group(bg1, bg2)
         # 敌机组
-        enemy = Enemy()
+        self.enemy = Enemy()
         self.enemy_group = pygame.sprite.Group()
         # 英雄组
         self.hero = Hero()
         self.hero_group = pygame.sprite.Group(self.hero)
         # 子弹组
-        bullet = Bullet(self.hero)
+        self.bullet = Bullet(self.hero)
         self.bullet_group = pygame.sprite.Group()
 
-game = PlaneGame(pygame, SCREEN_RECT)
+game = PlaneGame()
 
 game.start_game()

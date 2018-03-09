@@ -14,9 +14,6 @@ def check_KEYDOWN(hero, event, bullet_group, enemy_group):
     elif event.key == pygame.K_w:
         new_bullet = Bullet(hero)
         bullet_group.add(new_bullet)
-    elif event.key == pygame.K_e:
-        new_enemy = Enemy()
-        enemy_group.add(new_enemy)
     elif event.key == pygame.K_q:
         exit()
 
@@ -36,9 +33,13 @@ def check_KEY(hero, event, bullet_group, enemy_group):
     if event.type == pygame.QUIT:
         exit()
 
-    if event.type == pygame.KEYDOWN:
+    elif event.type == pygame.KEYDOWN:
         check_KEYDOWN(hero, event, bullet_group, enemy_group)
 
     elif event.type == pygame.KEYUP:
         check_KEYUP(hero, event)
 
+    elif event.type == pygame.USEREVENT:
+        new_enemy = Enemy()
+
+        enemy_group.add(new_enemy)
