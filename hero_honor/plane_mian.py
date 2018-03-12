@@ -65,6 +65,7 @@ class PlaneGame(object):
 
         #敌人碰撞英雄
         enemys = pygame.sprite.spritecollide(self.hero,self.enemy_group,True)
+        self.hero.hit = True
         if len(enemys) > 0:
             self.life -= 1
             if self.life == 0 :
@@ -76,8 +77,10 @@ class PlaneGame(object):
     def __update_sprites(self):
         '''更新精灵组'''
         for group in [self.back_group, self.hero_group, self.hero.bullets, self.enemy_group, self.enemy.bullets]:
-        	group.draw(self.screen)
-        	group.update()
+            group.draw(self.screen)
+            if self.hero.hit:
+                self.screen.blit(self.hero.bomb_list[self.hero.image_index],(self.hero.rect.x,self.hero.rect.y))
+            group.update()
         
 
     def show_life(self):

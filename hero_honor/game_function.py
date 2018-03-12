@@ -16,7 +16,7 @@ def check_KEYDOWN(hero, enemy, event, enemy_group,):
     
     elif event.key == pygame.K_DOWN:
         hero.moving_down = True
-    elif event.key == pygame.K_w:
+    elif event.key == pygame.K_SPACE:
         hero.is_fire = True
 
     
@@ -33,7 +33,7 @@ def check_KEYUP(hero, event):
         hero.moving_up = False
     elif event.key == pygame.K_DOWN:
         hero.moving_down = False
-    elif event.key == pygame.K_w:
+    elif event.key == pygame.K_SPACE:
         hero.is_fire = False
 
 

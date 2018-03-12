@@ -39,6 +39,9 @@ class Enemy(GameSprites):
 		self.rect.x = random.randint(0,max_x)
 		self.rect.bottom = 0
 
+		#敌军x轴方向
+		self.direction = random.randint(1,2)
+
 		#创建敌军子弹精灵组
 		self.bullets = pygame.sprite.Group()
 
@@ -48,12 +51,10 @@ class Enemy(GameSprites):
 
 	def update(self):
 		self.rect.y += self.speed
-		i = random.randint(1,2)
-		if i == 1:
-			self.rect.x += self.speed
+		if self.direction == 1:
+			self.rect.x -= random.randint(1,5)
 		else:
-			self.rect.x -= self.speed
-		
+			self.rect.x += random.randint(1,5)
 		if self.rect.y >= SCREEN_RECT.height:
 			self.kill()	
 
@@ -103,6 +104,13 @@ class Hero(GameSprites):
 		self.bullets = pygame.sprite.Group()
 		#开火标志
 		self.is_fire = False
+
+		#显示爆炸用到的属性
+		self.hit = False #表示是否被击中
+		self.bomb_list = [] #用来存储爆炸时需要的照片
+		self.__create_images() #调用这个方法想bomb_list里添加图片
+		self.image_num = 0 #用来记录While True 的次数，当次数达到一定值时才显示一张爆炸的图，然后清空，当这个次数再次达到时，再显示下一个爆炸的效果的图
+		self.image_index = 0 #用来记录当前要显示爆炸效果的图片序号
 		
 
 		#移动标志
@@ -137,13 +145,22 @@ class Hero(GameSprites):
 		if self.is_fire == True:
 			self.fire()
 
+		if self.hit == True:
+			self.image_num += 1
+			print(self.image_num)
+			if self.image_num == 7:
+				self.image_index + 1
+				self.image_num = 0
 
-	# def __create_images(self):
- #        # 添加爆炸图片
- #        self.bomb_list.append(pygame.image.load("./images/me_destroy_1.png"))
- #        self.bomb_list.append(pygame.image.load("./images/me_destroy_2.png"))
- #        self.bomb_list.append(pygame.image.load("./images/me_destroy_3.png"))
- #        self.bomb_list.append(pygame.image.load("./images/me_destroy_4.png"))
+	def __create_images(self):
+	    # 添加爆炸图片
+		self.bomb_list.append(pygame.image.load("./images/me_destroy_1.png"))
+		self.bomb_list.append(pygame.image.load("./images/me_destroy_2.png"))
+		self.bomb_list.append(pygame.image.load("./images/me_destroy_3.png"))
+		self.bomb_list.append(pygame.image.load("./images/me_destroy_4.png"))
+
+	# def display(self):
+	# 	#如果被击中，就显示爆炸效果，
 
 
 class Bullet_Hero(GameSprites):
