@@ -1,56 +1,87 @@
 import pygame
-from plane_sprites import Bullet_Hero
-from plane_sprites import Bullet_Enemy
-from plane_sprites import Enemy
+from plane_sprites import *
+# from plane_sprites import Bullet_Hero
+# from plane_sprites import Bullet_Enemy
+# from plane_sprites import Enemy
 
-def check_KEYDOWN(hero, enemy, event, enemy_group,):
-    
+
+def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group,):
+
     if event.key == pygame.K_RIGHT:
-        hero.moving_right = True
-    
-    elif event.key == pygame.K_LEFT:
-        hero.moving_left = True
-    
-    elif event.key == pygame.K_UP:
-        hero.moving_up = True
-    
-    elif event.key == pygame.K_DOWN:
-        hero.moving_down = True
-    elif event.key == pygame.K_SPACE:
-        hero.is_fire = True
+        hero1.moving_right = True
 
-    
+    elif event.key == pygame.K_LEFT:
+        hero1.moving_left = True
+
+    elif event.key == pygame.K_UP:
+        hero1.moving_up = True
+
+    elif event.key == pygame.K_DOWN:
+        hero1.moving_down = True
+    # elif event.key == 271 : # 右回车键
+    #     hero1.is_fire = True
+
+    if event.key == pygame.K_d:
+        hero2.moving_right = True
+
+    elif event.key == pygame.K_a:
+        hero2.moving_left = True
+
+    elif event.key == pygame.K_w:
+        hero2.moving_up = True
+
+    elif event.key == pygame.K_s:
+        hero2.moving_down = True
+
+    # elif event.key == pygame.K_j:
+    #     hero2.is_fire = True
+
     elif event.key == pygame.K_q:
         exit()
 
 
-def check_KEYUP(hero, event):
+def check_KEYUP(hero1, hero2, event):
     if event.key == pygame.K_RIGHT:
-        hero.moving_right = False
+        hero1.moving_right = False
     elif event.key == pygame.K_LEFT:
-        hero.moving_left = False
+        hero1.moving_left = False
     elif event.key == pygame.K_UP:
-        hero.moving_up = False
+        hero1.moving_up = False
     elif event.key == pygame.K_DOWN:
-        hero.moving_down = False
-    elif event.key == pygame.K_SPACE:
-        hero.is_fire = False
+        hero1.moving_down = False
+    # elif event.key == 271:
+    #     hero1.is_fire = False
+
+    if event.key == pygame.K_d:
+        hero2.moving_right = False
+
+    elif event.key == pygame.K_a:
+        hero2.moving_left = False
+
+    elif event.key == pygame.K_w:
+        hero2.moving_up = False
+
+    elif event.key == pygame.K_s:
+        hero2.moving_down = False
+
+    # elif event.key == pygame.K_j:
+    #     # hero2.is_fire = False
 
 
-def check_KEY(hero, enemy, event, enemy_group,):
+def check_KEY(hero1, hero2, enemy, event, enemy_group,):
     if event.type == pygame.QUIT:
         exit()
 
     elif event.type == pygame.KEYDOWN:
-        check_KEYDOWN(hero, enemy, event, enemy_group)
+        check_KEYDOWN(hero1, hero2, enemy, event, enemy_group)
 
     elif event.type == pygame.KEYUP:
-        check_KEYUP(hero, event)
+        check_KEYUP(hero1, hero2, event)
 
     elif event.type == pygame.USEREVENT:
         new_enemy = Enemy()
+        new_enemy.fire()
         enemy_group.add(new_enemy)
-
     elif event.type == pygame.USEREVENT + 1:
-        enemy.fire()
-
+        hero1.fire()
+        hero2.fire()
