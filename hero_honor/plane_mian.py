@@ -17,8 +17,8 @@ class PlaneGame(object):
         self.clock = pygame.time.Clock()
 
         # 生命数量
-        self.life1 = 2
-        self.life2 = 3
+        self.life1 = 1
+        self.life2 = 1
         # 分数
         self.score1 = 0
         self.score2 = 0
@@ -35,7 +35,6 @@ class PlaneGame(object):
         while True:
             # 1. 设置刷新帧率
             self.clock.tick(60)
-
             # 2. 事件监听
             self.__check_event()
 
@@ -138,10 +137,9 @@ class PlaneGame(object):
         # 英雄组
         self.hero1 = Hero('./images/life.png')
         self.hero_group1 = pygame.sprite.Group(self.hero1)
-        self.hero2 = Hero('./images/hero1.png')
-        self.hero2.image = pygame.transform.scale(self.hero2.image,(46,57))
-        self.hero2.rect.x = 120
-        self.hero2.rect.y = 450
+        self.hero2 = Hero('./images/life.png')
+        self.hero2.rect.x = 250
+        self.hero2.rect.y = 350
         self.hero_group2 = pygame.sprite.Group(self.hero2)
 
 

@@ -3,7 +3,7 @@ import random
 import time
 
 # 定义屏幕常量
-SCREEN_RECT = pygame.Rect(0, 0, 480, 600)
+SCREEN_RECT = pygame.Rect(0, 0, 700, 480)
 # 创建敌机事件常量
 CREAT_ENEMY_EVENT = pygame.USEREVENT
 # 英雄开火事件常量
@@ -26,8 +26,8 @@ class GameSprites(pygame.sprite.Sprite):
 
     def update(self):
 
-        # 默认在垂直方向移动
-        self.rect.y -= self.speed
+        # 默认在水平方向移动
+        self.rect.x += self.speed
 
 
 class Enemy(GameSprites):
@@ -40,12 +40,12 @@ class Enemy(GameSprites):
         self.speed = random.randint(1, 10)
 
         # 敌军初始位置随机
-        max_x = SCREEN_RECT.width - self.rect.width
-        self.rect.x = random.randint(0, max_x)
-        self.rect.bottom = 0
+        max_y = SCREEN_RECT.height - self.rect.height
+        self.rect.y = random.randint(0, max_y)
+        self.rect.x = SCREEN_RECT.width
 
-        # 敌军x轴方向
-        self.direction = random.randint(1, 2)
+        # 敌军y轴方向
+        self.direction = random.randint(-1,1)
 
         # 创建敌军子弹精灵组
         self.bullets = pygame.sprite.Group()
@@ -55,13 +55,19 @@ class Enemy(GameSprites):
         pygame.time.set_timer(CREAT_ENEMY_EVENT, 500)
 
     def update(self):
-        self.rect.y += self.speed
+        self.rect.x -= self.speed
         if self.direction == 1:
-            self.rect.x -= random.randint(1, 5)
-        else:
-            self.rect.x += random.randint(1, 5)
-        if self.rect.y >= SCREEN_RECT.height or self.rect.x <= -self.rect.width or self.rect.x >= SCREEN_RECT.width:
-            self.kill()
+            self.rect.y += random.randint(1, 5)
+        elif self.direction == -1:
+            self.rect.y -= random.randint(1, 5)
+        elif self.direction == 0:
+        	self.speed = 1
+
+        if self.rect.y <= 0 or self.rect.bottom >= SCREEN_RECT.height:
+        	self.direction = -self.direction
+
+        if self.rect.x <= 0:
+        	self.kill()
 
     def fire(self):
         '''发射子弹'''
@@ -82,17 +88,17 @@ class Background(GameSprites):
     '''背景精灵类'''
 
     def __init__(self, is_alt=False):
-        image_name = './images/background1.png'
+        image_name = './images/background.png'
 
         super().__init__(image_name)
         # 判断是否交替图片，如果是，将图片设置到屏幕顶部
         if is_alt:
-            self.rect.y = -self.rect.height
+            self.rect.x = self.rect.width
 
     def update(self):
-        self.rect.y += self.speed
-        if self.rect.y >= SCREEN_RECT.height:
-            self.rect.y = -self.rect.height
+        self.rect.x -= 2
+        if self.rect.x <= -SCREEN_RECT.width:
+            self.rect.x = SCREEN_RECT.width
 
 
 class Hero(GameSprites):
@@ -100,12 +106,12 @@ class Hero(GameSprites):
 
     def __init__(self, image_name):
         super().__init__(image_name)
-        self.rect.x = 360
-        self.rect.y = 450
+        self.rect.x = 250
+        self.rect.y = 120
         self.speed = 7
         # 设置定时器
         # 每0.3秒发射一次子弹
-        pygame.time.set_timer(HERO_FIRE_EVENT, 300)
+        pygame.time.set_timer(HERO_FIRE_EVENT, 499)
 
         # 创建英雄子弹精灵组
         self.bullets = pygame.sprite.Group()
@@ -132,11 +138,11 @@ class Hero(GameSprites):
                 # 添加两排武器
             bullet1 = Bullet_Hero()
             bullet2 = Bullet_Hero()
-            bullet1.rect.centerx = self.rect.centerx - 13
-            bullet1.rect.bottom = self.rect.y + 20 - 15*i
+            bullet1.rect.centery = self.rect.centery - 13
+            bullet1.rect.x = self.rect.x + 12*i + 20
 
-            bullet2.rect.centerx = self.rect.centerx + 13
-            bullet2.rect.bottom = self.rect.y + 20 - 15*i
+            bullet2.rect.centery = self.rect.centery + 13
+            bullet2.rect.x = self.rect.x + 12*i + 20
             self.bullets.add(bullet1, bullet2)
 
     def update(self):
@@ -183,15 +189,14 @@ class Bullet_Hero(GameSprites):
     '''英雄子弹精灵类'''
 
     def __init__(self,):
-        image_name = './images/bullet1.png'
+        image_name = './images/bullet22.png'
         super().__init__(image_name)
-        self.image = pygame.transform.scale(self.image, (3, 8))
-        # 存储用小数表示的子弹位置
+        self.image = pygame.transform.scale(self.image, (8, 3))
         self.speed = 20
 
     def update(self):
-        super().update()
-        if self.rect.bottom <= 0:
+        self.rect.x += self.speed
+        if self.rect.x >= SCREEN_RECT.width:
             self.kill()
 
 
