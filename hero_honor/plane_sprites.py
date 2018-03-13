@@ -219,3 +219,21 @@ class Button(object):
         self.image = pygame.image.load(image_name)
         self.rect = self.image.get_rect()
         self.rect.center = SCREEN_RECT.center
+
+
+
+class Music(object):
+	def __init__(self):
+		# self.path = path
+		pygame.mixer.init()
+		pygame.mixer.music.load('./music/bgm1.mp3')
+
+	def play_music(self):
+		pygame.mixer.music.play()
+
+	def pause_music(self):
+		pygame.mixer.music.pause()
+
+	def unpause_music(self):
+		pygame.mixer.music.unpause()
+

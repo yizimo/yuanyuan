@@ -4,18 +4,24 @@ from plane_sprites import *
 from game_function import check_KEY
 from pygame.font import *
 
+pygame.mixer.init()
+pygame.mixer.music.load('./music/bgm.mp3')
+pygame.mixer.music.play()
+
 
 class PlaneGame(object):
     '''主游戏类'''
 
     def __init__(self):
-        # lij
+        # 创建游戏屏幕
         self.screen = pygame.display.set_mode((SCREEN_RECT.size))
+
         # 设置窗口的标题
         pygame.display.set_caption('雷霆战机1.0')
         # 创建游戏时钟
         self.clock = pygame.time.Clock()
-
+        # 添加背景音乐
+        self.bgm = Music()
         # 生命数量
         self.life1 = 1
         self.life2 = 1
@@ -47,6 +53,9 @@ class PlaneGame(object):
             # 5. 显示生命和分数
             self.show_life()
 
+            # 6. 播放背景音乐
+
+            self.bgm.play_music()
             # 5. 更新屏幕显示
             pygame.display.update()
 
@@ -54,7 +63,6 @@ class PlaneGame(object):
         """事件监听"""
         for event in pygame.event.get():
             print(event)
-
             check_KEY(self.hero1, self.hero2, self.enemy,
                       event, self.enemy_group,)
 
@@ -142,7 +150,7 @@ class PlaneGame(object):
         self.hero2.rect.y = 350
         self.hero_group2 = pygame.sprite.Group(self.hero2)
 
-
 game = PlaneGame()
 
 game.start_game()
+
