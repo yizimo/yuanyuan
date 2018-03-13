@@ -12,6 +12,8 @@ HERO_FIRE_EVENT = pygame.USEREVENT + 1
 ENEMY_FIRE_EVENT = pygame.USEREVENT
 
 
+
+
 class GameSprites(pygame.sprite.Sprite):
     '''游戏精灵类'''
 
@@ -61,7 +63,7 @@ class Enemy(GameSprites):
         elif self.direction == -1:
             self.rect.y -= random.randint(1, 5)
         elif self.direction == 0:
-        	self.speed = 1
+        	self.speed = 10
 
         if self.rect.y <= 0 or self.rect.bottom >= SCREEN_RECT.height:
         	self.direction = -self.direction
@@ -212,28 +214,9 @@ class Bullet_Enemy(GameSprites):
         self.rect.y += self.speed
 
 
-class Button(object):
-    '''按钮类'''
-
-    def __init__(self, image_name):
-        self.image = pygame.image.load(image_name)
-        self.rect = self.image.get_rect()
-        self.rect.center = SCREEN_RECT.center
 
 
 
-class Music(object):
-	def __init__(self):
-		# self.path = path
-		pygame.mixer.init()
-		pygame.mixer.music.load('./music/bgm1.mp3')
 
-	def play_music(self):
-		pygame.mixer.music.play()
 
-	def pause_music(self):
-		pygame.mixer.music.pause()
-
-	def unpause_music(self):
-		pygame.mixer.music.unpause()
 

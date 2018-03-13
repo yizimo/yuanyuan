@@ -1,11 +1,10 @@
 import pygame,sys
+from Music import Music
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode([640,480])
-pygame.time.delay(1000)
-file = "./music/bgm.mp3"
-pygame.mixer.music.load(file)
-pygame.mixer.music.play()
+a = Music("./music/bgm.mp3")
+a.play_music()
 running = True
 while running:
     for event in pygame.event.get():

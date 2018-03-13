@@ -3,10 +3,9 @@ import time
 from plane_sprites import *
 from game_function import check_KEY
 from pygame.font import *
-
-pygame.mixer.init()
-pygame.mixer.music.load('./music/bgm.mp3')
-pygame.mixer.music.play()
+from Tools import *
+# 显示中文歌曲名
+# encoding='GBK'
 
 
 class PlaneGame(object):
@@ -17,17 +16,19 @@ class PlaneGame(object):
         self.screen = pygame.display.set_mode((SCREEN_RECT.size))
 
         # 设置窗口的标题
-        pygame.display.set_caption('雷霆战机1.0')
+        pygame.display.set_caption('雷霆战机3.0')
         # 创建游戏时钟
         self.clock = pygame.time.Clock()
-        # 添加背景音乐
-        self.bgm = Music()
         # 生命数量
         self.life1 = 1
         self.life2 = 1
         # 分数
         self.score1 = 0
         self.score2 = 0
+        # 设置背景音乐
+        self.BGM = Music('./music/bgm3.mp3')
+        #设置控制音乐暂停播放的变量
+        self.bgm_pause = 3
 
         # 调用私有方法创建精灵组
         self.__creat_sprites()
@@ -39,6 +40,12 @@ class PlaneGame(object):
         '''开始游戏'''
         pygame.init()
         while True:
+            pygame.init()
+
+            # 判断是否有音乐在播放，如果没有，就播放
+            # 也就是循环播放背景音乐
+            if not pygame.mixer.music.get_busy():
+                self.BGM.play_music()
             # 1. 设置刷新帧率
             self.clock.tick(60)
             # 2. 事件监听
@@ -53,22 +60,21 @@ class PlaneGame(object):
             # 5. 显示生命和分数
             self.show_life()
 
-            # 6. 播放背景音乐
-
-            self.bgm.play_music()
             # 5. 更新屏幕显示
             pygame.display.update()
 
     def __check_event(self):
         """事件监听"""
         for event in pygame.event.get():
-            print(event)
-            check_KEY(self.hero1, self.hero2, self.enemy,
-                      event, self.enemy_group,)
-
-            # 测试代码
             # print(event)
-            # print(self.hero.moving_right)
+            check_KEY(self.hero1, self.hero2, self.enemy,
+                      event, self.enemy_group, self.BGM, self.bgm_pause)
+
+            # 主战机跟随鼠标移动
+            if event.type == pygame.MOUSEMOTION:
+                (x,y) = pygame.mouse.get_pos()
+                self.hero1.rect.x = x
+                self.hero1.rect.y = y
 
     def __check_collide(self):
         '''碰撞检测'''
@@ -150,7 +156,7 @@ class PlaneGame(object):
         self.hero2.rect.y = 350
         self.hero_group2 = pygame.sprite.Group(self.hero2)
 
+
 game = PlaneGame()
 
 game.start_game()
-

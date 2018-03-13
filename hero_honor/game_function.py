@@ -4,8 +4,8 @@ from plane_sprites import *
 # from plane_sprites import Bullet_Enemy
 # from plane_sprites import Enemy
 
+def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, bgm_pause):
 
-def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group,):
 
     if event.key == pygame.K_RIGHT:
         hero1.moving_right = True
@@ -18,8 +18,15 @@ def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group,):
 
     elif event.key == pygame.K_DOWN:
         hero1.moving_down = True
-    # elif event.key == 271 : # 右回车键
-    #     hero1.is_fire = True
+
+    elif event.key == pygame.K_SPACE:
+        bgm_pause += 1
+        if bgm_pause % 2 == 0:
+            pygame.mouse.set_visible(False)
+        else:
+            pygame.mouse.set_visible(True)
+        print(bgm_pause)
+
 
     if event.key == pygame.K_d:
         hero2.moving_right = True
@@ -68,12 +75,12 @@ def check_KEYUP(hero1, hero2, event):
     #     # hero2.is_fire = False
 
 
-def check_KEY(hero1, hero2, enemy, event, enemy_group,):
+def check_KEY(hero1, hero2, enemy, event, enemy_group, BGM, bgm_pause):
     if event.type == pygame.QUIT:
         exit()
 
-    elif event.type == pygame.KEYDOWN:
-        check_KEYDOWN(hero1, hero2, enemy, event, enemy_group)
+    if event.type == pygame.KEYDOWN:
+        check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, bgm_pause)
 
     elif event.type == pygame.KEYUP:
         check_KEYUP(hero1, hero2, event)
@@ -85,3 +92,9 @@ def check_KEY(hero1, hero2, enemy, event, enemy_group,):
     elif event.type == pygame.USEREVENT + 1:
         hero1.fire()
         hero2.fire()
+
+
+
+def check_mouse(self):
+    if event.type == pygame.MOUSEMOTION:
+        print(pygame.mouse.get_pos())
