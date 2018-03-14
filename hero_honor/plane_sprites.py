@@ -6,10 +6,11 @@ import time
 SCREEN_RECT = pygame.Rect(0, 0, 700, 480)
 # 创建敌机事件常量
 CREAT_ENEMY_EVENT = pygame.USEREVENT
-# 英雄开火事件常量
+#英雄开火常量
 HERO_FIRE_EVENT = pygame.USEREVENT + 1
 # 敌军开火常量
-ENEMY_FIRE_EVENT = pygame.USEREVENT
+ENEMY_FIRE_EVENT = pygame.USEREVENT + 2
+
 
 
 
@@ -79,11 +80,6 @@ class Enemy(GameSprites):
         bullet.rect.bottom = self.rect.bottom
         self.bullets.add(bullet)
 
-    # def __create_images(self):
- #    	self.bomb_list.append(pygame.image.load("./images/enemy1_down1.png"))
- #    	self.bomb_list.append(pygame.image.load("./images/enemy1_down2.png"))
- #    	self.bomb_list.append(pygame.image.load("./images/enemy1_down3.png"))
- #    	self.bomb_list.append(pygame.image.load("./images/enemy1_down4.png"))
 
 
 class Background(GameSprites):
@@ -108,24 +104,19 @@ class Hero(GameSprites):
 
     def __init__(self, image_name):
         super().__init__(image_name)
+        # 设置英雄的初始位置
         self.rect.x = 250
         self.rect.y = 120
         self.speed = 7
         # 设置定时器
-        # 每0.3秒发射一次子弹
+        # 每0.5秒发射一次子弹
         pygame.time.set_timer(HERO_FIRE_EVENT, 499)
 
         # 创建英雄子弹精灵组
         self.bullets = pygame.sprite.Group()
-        # 开火标志
-        # self.is_fire = False
 
-        # 显示爆炸用到的属性
-        self.hit = False  # 表示是否被击中
-        self.bomb_list = []  # 用来存储爆炸时需要的照片
-        self.__create_images()  # 调用这个方法想bomb_list里添加图片
-        self.image_num = 0  # 用来记录While True 的次数，当次数达到一定值时才显示一张爆炸的图，然后清空，当这个次数再次达到时，再显示下一个爆炸的效果的图
-        self.image_index = 0  # 用来记录当前要显示爆炸效果的图片序号
+        # # 创建僚机精灵组
+        # self.heart = 
 
         # 移动标志
         self.moving_right = False
@@ -137,7 +128,7 @@ class Hero(GameSprites):
         '''发射子弹'''
         # 设置子弹的初始位置
         for i in (1, 2, 3):
-                # 添加两排武器
+            # 添加两排武器
             bullet1 = Bullet_Hero()
             bullet2 = Bullet_Hero()
             bullet1.rect.centery = self.rect.centery - 13
@@ -160,32 +151,6 @@ class Hero(GameSprites):
 
         if self.moving_down and self.rect.bottom < SCREEN_RECT.bottom:
             self.rect.y += self.speed
-
-            # if self.is_fire == True:
-            #     self.fire()
-
-        if self.hit == True:
-            self.image_num += 1
-            if self.image_num == 7:
-                self.image_index + 1
-                self.image_num = 0
-
-    def __create_images(self):
-        # 添加爆炸图片
-        # 首先缩放图片
-        image_bomb_name1 = pygame.image.load('./images/me_destroy_1.png')
-        image_bomb_name2 = pygame.image.load('./images/me_destroy_2.png')
-        image_bomb_name3 = pygame.image.load('./images/me_destroy_3.png')
-        image_bomb_name4 = pygame.image.load('./images/me_destroy_4.png')
-        image_bomb_name1 = pygame.transform.scale(image_bomb_name1, (46, 57))
-        image_bomb_name2 = pygame.transform.scale(image_bomb_name2, (46, 57))
-        image_bomb_name3 = pygame.transform.scale(image_bomb_name3, (46, 57))
-        image_bomb_name4 = pygame.transform.scale(image_bomb_name4, (46, 57))
-        self.bomb_list.append(image_bomb_name1)
-        self.bomb_list.append(image_bomb_name2)
-        self.bomb_list.append(image_bomb_name3)
-        self.bomb_list.append(image_bomb_name4)
-
 
 class Bullet_Hero(GameSprites):
     '''英雄子弹精灵类'''

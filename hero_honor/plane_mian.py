@@ -26,15 +26,14 @@ class PlaneGame(object):
         self.score1 = 0
         self.score2 = 0
         # 设置背景音乐
-        self.BGM = Music('./music/bgm3.mp3')
-        #设置控制音乐暂停播放的变量
-        self.bgm_pause = 3
+        self.BGM = Music('./music/bgm1.mp3')
+        #创建按钮对象
+        # 可以控制鼠标显示和音乐暂停
+        self.button = Button()
 
         # 调用私有方法创建精灵组
         self.__creat_sprites()
 
-        # 创建开始按钮
-        self.start_button = Button('./images/resume_nor.png')
 
     def start_game(self):
         '''开始游戏'''
@@ -68,13 +67,14 @@ class PlaneGame(object):
         for event in pygame.event.get():
             # print(event)
             check_KEY(self.hero1, self.hero2, self.enemy,
-                      event, self.enemy_group, self.BGM, self.bgm_pause)
+                      event, self.enemy_group, self.BGM, self.button)
 
             # 主战机跟随鼠标移动
-            if event.type == pygame.MOUSEMOTION:
+            if event.type == pygame.MOUSEMOTION and self.life1 > 0:
                 (x,y) = pygame.mouse.get_pos()
-                self.hero1.rect.x = x
-                self.hero1.rect.y = y
+                self.hero1.rect.centerx= x
+                self.hero1.rect.centery = y
+
 
     def __check_collide(self):
         '''碰撞检测'''
@@ -91,6 +91,7 @@ class PlaneGame(object):
             self.life1 -= 1
             self.hero1.hit = True
             if self.life1 == 0:
+                # 英雄死亡后，移除屏幕
                 self.hero1.rect.bottom = 0
                 self.hero1.rect.x = SCREEN_RECT.width
                 self.hero1.kill()
@@ -105,6 +106,10 @@ class PlaneGame(object):
                 self.hero2.rect.x = SCREEN_RECT.width
                 self.hero2.kill()
 
+        # 当两个玩家都死亡，游戏退出
+        if self.life1 == 0 and self.life2 == 0:
+            exit()
+
     def __update_sprites(self):
         '''更新精灵组'''
         for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero1.bullets, self.hero2.bullets, self.enemy_group, self.enemy.bullets]:
@@ -112,8 +117,8 @@ class PlaneGame(object):
             # if self.hero.hit:
             #     self.screen.blit(self.hero.bomb_list[self.hero.image_index],(self.hero.rect.x,self.hero.rect.y))
             group.update()
-            self.screen.blit(self.start_button.image,
-                             (self.start_button.rect.x, self.start_button.rect.y))
+            # self.screen.blit(self.start_button.image,
+            #                  (self.start_button.rect.x, self.start_button.rect.y))
             # print(self.hero.image_num)
 
     def show_life(self):

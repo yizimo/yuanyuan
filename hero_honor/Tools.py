@@ -3,6 +3,8 @@ from plane_sprites import *
 
 class Music(object):
 	'''音乐类'''	
+
+	MUSIC_LIST = ['./music/bgm','./music/bgm1']
 	
 	def __init__(self, path):
 		self.path = path
@@ -21,7 +23,6 @@ class Music(object):
 class Button(object):
     '''按钮类'''
 
-    def __init__(self, image_name):
-        self.image = pygame.image.load(image_name)
-        self.rect = self.image.get_rect()
-        self.rect.center = SCREEN_RECT.center
+    def __init__(self):
+    	self.count_mouse = 1
+    	self.count_music = 1

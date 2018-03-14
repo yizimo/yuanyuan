@@ -4,8 +4,24 @@ from plane_sprites import *
 # from plane_sprites import Bullet_Enemy
 # from plane_sprites import Enemy
 
-def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, bgm_pause):
+def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, button):
 
+
+    # 按下`键显示或隐藏鼠标
+    if event.key == 96:
+        button.count_mouse += 1
+        if button.count_mouse % 2 == 0:
+            pygame.mouse.set_visible(False)
+        else:
+            pygame.mouse.set_visible(True)
+    # 按下空格键暂停或继续音乐
+    if event.key == pygame.K_SPACE:
+        button.count_music += 1
+        if button.count_music %2 == 0:
+            BGM.pause_music()
+        else:
+            BGM.unpause_music()
+        
 
     if event.key == pygame.K_RIGHT:
         hero1.moving_right = True
@@ -19,13 +35,6 @@ def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, bgm_pause):
     elif event.key == pygame.K_DOWN:
         hero1.moving_down = True
 
-    elif event.key == pygame.K_SPACE:
-        bgm_pause += 1
-        if bgm_pause % 2 == 0:
-            pygame.mouse.set_visible(False)
-        else:
-            pygame.mouse.set_visible(True)
-        print(bgm_pause)
 
 
     if event.key == pygame.K_d:
@@ -75,24 +84,24 @@ def check_KEYUP(hero1, hero2, event):
     #     # hero2.is_fire = False
 
 
-def check_KEY(hero1, hero2, enemy, event, enemy_group, BGM, bgm_pause):
+def check_KEY(hero1, hero2, enemy, event, enemy_group, BGM, button):
     if event.type == pygame.QUIT:
         exit()
 
     if event.type == pygame.KEYDOWN:
-        check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, bgm_pause)
+        check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, button)
 
     elif event.type == pygame.KEYUP:
         check_KEYUP(hero1, hero2, event)
 
-    elif event.type == pygame.USEREVENT:
+    elif event.type == CREAT_ENEMY_EVENT:
         new_enemy = Enemy()
-        new_enemy.fire()
         enemy_group.add(new_enemy)
-    elif event.type == pygame.USEREVENT + 1:
+    elif event.type == HERO_FIRE_EVENT:
         hero1.fire()
         hero2.fire()
-
+    elif event.type == ENEMY_FIRE_EVENT:
+        enemy.fire()
 
 
 def check_mouse(self):
