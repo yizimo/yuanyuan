@@ -115,8 +115,10 @@ class Hero(GameSprites):
         # 创建英雄子弹精灵组
         self.bullets = pygame.sprite.Group()
 
-        # # 创建僚机精灵组
-        # self.heart = 
+        #创建僚机精灵组
+        self.wings = pygame.sprite.Group()
+        heart = Wing()
+        pygame.sprite.Group(heart)
 
         # 移动标志
         self.moving_right = False
@@ -151,6 +153,25 @@ class Hero(GameSprites):
 
         if self.moving_down and self.rect.bottom < SCREEN_RECT.bottom:
             self.rect.y += self.speed
+
+
+class Wing(GameSprites):
+	'''僚机精灵类'''
+	def __init__(self):
+		super().__init__('./images/bullet2.png')
+		self.rect.x = SCREEN_RECT.centerx
+		self.rect.y = SCREEN_RECT.centery
+	def update(self):
+		x = (25 - (y-hero.rect.y)**2) ** 0.5 + hero.rect.x
+		y = (25 - (y-hero.rect.y)**2) ** 0.5 + hero.rect.y
+
+		self.rect.x = x
+		self.rect.y = y
+
+
+
+
+
 
 class Bullet_Hero(GameSprites):
     '''英雄子弹精灵类'''

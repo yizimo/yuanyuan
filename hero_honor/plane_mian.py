@@ -89,7 +89,6 @@ class PlaneGame(object):
             self.hero1, self.enemy_group, True)
         if len(enemys1) > 0 and self.life1 > 0:
             self.life1 -= 1
-            self.hero1.hit = True
             if self.life1 == 0:
                 # 英雄死亡后，移除屏幕
                 self.hero1.rect.bottom = 0
@@ -100,7 +99,6 @@ class PlaneGame(object):
             self.hero2, self.enemy_group, True)
         if len(enemys2) > 0 and self.life2 > 0:
             self.life2 -= 1
-            self.hero2.hit = True
             if self.life2 == 0:
                 self.hero2.rect.bottom = 0
                 self.hero2.rect.x = SCREEN_RECT.width
@@ -112,7 +110,7 @@ class PlaneGame(object):
 
     def __update_sprites(self):
         '''更新精灵组'''
-        for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero1.bullets, self.hero2.bullets, self.enemy_group, self.enemy.bullets]:
+        for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero1.bullets, self.hero2.bullets, self.enemy_group, self.enemy.bullets, self.hero1.wings]:
             group.draw(self.screen)
             # if self.hero.hit:
             #     self.screen.blit(self.hero.bomb_list[self.hero.image_index],(self.hero.rect.x,self.hero.rect.y))
