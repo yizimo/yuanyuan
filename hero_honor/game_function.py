@@ -111,7 +111,3 @@ def check_KEY(hero1, hero2, hero3, enemy, event, enemy_group, BGM, button):
 
 
 
-
-def check_mouse(self):
-    if event.type == pygame.MOUSEMOTION:
-        print(pygame.mouse.get_pos())

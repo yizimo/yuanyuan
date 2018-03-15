@@ -168,7 +168,8 @@ class Hero(GameSprites):
         # 僚机的开火
         elif self.wing == 1:
             bullet = Bullet_Hero()
-            bullet.image = pygame.transform.scale(bullet.image,(6,3))
+            bullet.speed = 20
+            bullet.image = pygame.transform.scale(bullet.image,(20,3))
             bullet.rect.x = self.rect.x + self.rect.width + 5
             bullet.rect.centery = self.rect.centery - 6
             self.bullets.add(bullet)

@@ -1,5 +1,4 @@
 import pygame
-import time
 from plane_sprites import *
 from game_function import check_KEY
 from pygame.font import *
@@ -69,12 +68,10 @@ class PlaneGame(object):
                       event, self.enemy_group, self.BGM, self.button)
 
             # 主战机跟随鼠标移动
-            if event.type == pygame.MOUSEMOTION and self.life1 > 0:
+            if event.type == pygame.MOUSEMOTION and self.life2 > 0:
                 (x,y) = pygame.mouse.get_pos()
-                self.hero1.rect.centerx= x
-                self.hero3.rect.centerx = x
-                self.hero1.rect.centery = y
-                self.hero3.rect.centery = y
+                self.hero2.rect.centerx= x
+                self.hero2.rect.centery = y
 
 
     def __check_collide(self):
