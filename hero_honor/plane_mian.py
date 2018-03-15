@@ -20,8 +20,8 @@ class PlaneGame(object):
         # 创建游戏时钟
         self.clock = pygame.time.Clock()
         # 生命数量
-        self.life1 = 1
-        self.life2 = 1
+        self.life1 = 3
+        self.life2 = 3
         # 分数
         self.score1 = 0
         self.score2 = 0
@@ -37,7 +37,6 @@ class PlaneGame(object):
 
     def start_game(self):
         '''开始游戏'''
-        pygame.init()
         while True:
             pygame.init()
 
@@ -66,20 +65,22 @@ class PlaneGame(object):
         """事件监听"""
         for event in pygame.event.get():
             # print(event)
-            check_KEY(self.hero1, self.hero2, self.enemy,
+            check_KEY(self.hero1, self.hero2, self.hero3,  self.enemy,
                       event, self.enemy_group, self.BGM, self.button)
 
             # 主战机跟随鼠标移动
             if event.type == pygame.MOUSEMOTION and self.life1 > 0:
                 (x,y) = pygame.mouse.get_pos()
                 self.hero1.rect.centerx= x
+                self.hero3.rect.centerx = x
                 self.hero1.rect.centery = y
+                self.hero3.rect.centery = y
 
 
     def __check_collide(self):
         '''碰撞检测'''
         # 子弹碰撞敌人
-        if pygame.sprite.groupcollide(self.hero1.bullets, self.enemy_group, True, True):
+        if pygame.sprite.groupcollide(self.hero1.bullets, self.enemy_group, True, True) or pygame.sprite.groupcollide(self.hero3.bullets, self.enemy_group, True, True):
             self.score1 += 1
         if pygame.sprite.groupcollide(self.hero2.bullets, self.enemy_group, True, True):
             self.score2 += 1
@@ -90,6 +91,11 @@ class PlaneGame(object):
         if len(enemys1) > 0 and self.life1 > 0:
             self.life1 -= 1
             if self.life1 == 0:
+
+                # 英雄死亡后，僚机也随之消失
+                self.hero3.rect.x = 1000
+                self.hero3.rect.y = 1000
+                self.hero3.kill()
                 # 英雄死亡后，移除屏幕
                 self.hero1.rect.bottom = 0
                 self.hero1.rect.x = SCREEN_RECT.width
@@ -103,6 +109,14 @@ class PlaneGame(object):
                 self.hero2.rect.bottom = 0
                 self.hero2.rect.x = SCREEN_RECT.width
                 self.hero2.kill()
+        # 检测僚机和敌机的碰撞
+        enemys3 = pygame.sprite.spritecollide(self.hero3, self.enemy_group, True) 
+        if len(enemys3) > 0 :
+            self.hero3.rect.x = 1000
+            self.hero3.rect.y = 1000
+            self.hero1.wing = 2
+            self.hero3.kill()
+
 
         # 当两个玩家都死亡，游戏退出
         if self.life1 == 0 and self.life2 == 0:
@@ -110,14 +124,9 @@ class PlaneGame(object):
 
     def __update_sprites(self):
         '''更新精灵组'''
-        for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero1.bullets, self.hero2.bullets, self.enemy_group, self.enemy.bullets, self.hero1.wings]:
+        for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero_group3, self.hero1.bullets, self.hero2.bullets, self.hero3.bullets, self.enemy_group, self.enemy.bullets, ]:
             group.draw(self.screen)
-            # if self.hero.hit:
-            #     self.screen.blit(self.hero.bomb_list[self.hero.image_index],(self.hero.rect.x,self.hero.rect.y))
             group.update()
-            # self.screen.blit(self.start_button.image,
-            #                  (self.start_button.rect.x, self.start_button.rect.y))
-            # print(self.hero.image_num)
 
     def show_life(self):
         '''显示字体'''
@@ -154,10 +163,17 @@ class PlaneGame(object):
         # 英雄组
         self.hero1 = Hero('./images/life.png')
         self.hero_group1 = pygame.sprite.Group(self.hero1)
-        self.hero2 = Hero('./images/life.png')
+        self.hero2 = Hero('./images/life.png',wing = 2)
         self.hero2.rect.x = 250
         self.hero2.rect.y = 350
         self.hero_group2 = pygame.sprite.Group(self.hero2)
+        # 僚机组
+        self.hero3 = Hero('./images/life.png',wing = 1)
+        self.hero3.image = pygame.transform.scale(self.hero3.image,(35,25))
+        self.hero3.rect.centerx = self.hero1.rect.centerx 
+        self.hero3.rect.centery = self.hero1.rect.centery - 35
+        self.hero_group3 = pygame.sprite.Group(self.hero3)
+
 
 
 game = PlaneGame()

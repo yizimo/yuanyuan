@@ -4,7 +4,7 @@ from plane_sprites import *
 # from plane_sprites import Bullet_Enemy
 # from plane_sprites import Enemy
 
-def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, button):
+def check_KEYDOWN(hero1, hero2, hero3,enemy, event, enemy_group, BGM, button):
 
 
     # 按下`键显示或隐藏鼠标
@@ -23,17 +23,21 @@ def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, button):
             BGM.unpause_music()
         
 
-    if event.key == pygame.K_RIGHT:
+    if event.key == pygame.K_RIGHT :
         hero1.moving_right = True
+        hero3.moving_right = True
 
     elif event.key == pygame.K_LEFT:
         hero1.moving_left = True
+        hero3.moving_left = True
 
-    elif event.key == pygame.K_UP:
+    elif event.key == pygame.K_UP :
         hero1.moving_up = True
+        hero3.moving_up = True
 
     elif event.key == pygame.K_DOWN:
         hero1.moving_down = True
+        hero3.moving_down = True
 
 
 
@@ -56,17 +60,19 @@ def check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, button):
         exit()
 
 
-def check_KEYUP(hero1, hero2, event):
+def check_KEYUP(hero1, hero2, hero3, event):
     if event.key == pygame.K_RIGHT:
         hero1.moving_right = False
+        hero3.moving_right = False
     elif event.key == pygame.K_LEFT:
         hero1.moving_left = False
+        hero3.moving_left = False
     elif event.key == pygame.K_UP:
         hero1.moving_up = False
+        hero3.moving_up = False
     elif event.key == pygame.K_DOWN:
         hero1.moving_down = False
-    # elif event.key == 271:
-    #     hero1.is_fire = False
+        hero3.moving_down = False
 
     if event.key == pygame.K_d:
         hero2.moving_right = False
@@ -84,15 +90,15 @@ def check_KEYUP(hero1, hero2, event):
     #     # hero2.is_fire = False
 
 
-def check_KEY(hero1, hero2, enemy, event, enemy_group, BGM, button):
+def check_KEY(hero1, hero2, hero3, enemy, event, enemy_group, BGM, button):
     if event.type == pygame.QUIT:
         exit()
 
     if event.type == pygame.KEYDOWN:
-        check_KEYDOWN(hero1, hero2, enemy, event, enemy_group, BGM, button)
+        check_KEYDOWN(hero1, hero2, hero3, enemy, event, enemy_group, BGM, button)
 
     elif event.type == pygame.KEYUP:
-        check_KEYUP(hero1, hero2, event)
+        check_KEYUP(hero1, hero2, hero3, event)
 
     elif event.type == CREAT_ENEMY_EVENT:
         new_enemy = Enemy()
@@ -100,8 +106,10 @@ def check_KEY(hero1, hero2, enemy, event, enemy_group, BGM, button):
     elif event.type == HERO_FIRE_EVENT:
         hero1.fire()
         hero2.fire()
-    elif event.type == ENEMY_FIRE_EVENT:
-        enemy.fire()
+    elif event.type == WING_FIRE_EVENT:
+        hero3.fire()
+
+
 
 
 def check_mouse(self):
