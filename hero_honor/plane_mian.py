@@ -172,7 +172,7 @@ class PlaneGame(object):
         self.hero_group3 = pygame.sprite.Group(self.hero3)
 
 
+if __name__ == '__main__':
+    game = PlaneGame()
 
-game = PlaneGame()
-
-game.start_game()
+    game.start_game()
