@@ -137,6 +137,8 @@ class Hero(GameSprites):
         self.rect.x = 250
         self.rect.y = 120
         self.speed = 7
+        # 设置一个计数器，使得游戏开始界面没有子弹发射出
+        self.time_count = 0
         # 设置定时器
         # 英雄1每0.4秒发射一次子弹
         pygame.time.set_timer(HERO_FIRE_EVENT, 400)
@@ -177,6 +179,7 @@ class Hero(GameSprites):
 
     def update(self):
         '''根据移动标志调整飞船位置'''
+        self.time_count = 1
         # 玩家的移动
         if self.wing == 0:
             if self.moving_right and self.rect.x < SCREEN_RECT.width - self.rect.width:

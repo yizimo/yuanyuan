@@ -20,3 +20,29 @@ class Music(object):
 	def unpause_music(self):
 		pygame.mixer.music.unpause()
 
+
+class Button(object):
+	'''按钮类'''
+	def __init__(self):
+
+		self.count_mouse = 1
+		self.pause_game = 1
+		self.count_music = 1
+
+	def begin(self):
+		self.pause_game += 1
+
+	def update(self):
+		if self.pause_game % 2 == 0:
+			self.image = pygame.image.load('./images/resume_pressed.png')
+			self.rect = self.image.get_rect()
+			self.rect.x = 20
+			self.rect.bottom = SCREEN_RECT.bottom
+
+		else:
+			self.image = pygame.image.load('./images/pause_pressed.png')
+			self.rect = self.image.get_rect()
+			self.rect.x = 20
+			self.rect.bottom = SCREEN_RECT.bottom
+
+

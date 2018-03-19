@@ -1,8 +1,11 @@
 import pygame
+import time
 from plane_sprites import *
 from game_function import check_KEY
+from game_function import check_mouse
 from pygame.font import *
 from Tools import *
+
 # 显示中文歌曲名
 # encoding='GBK'
 
@@ -27,11 +30,14 @@ class PlaneGame(object):
         # 设置背景音乐
         self.BGM = Music('./music/bgm1.mp3')
         #创建按钮对象
-        # 可以控制鼠标显示和音乐暂停
+        # 可以控制鼠标显示和控制游戏开始暂停
         self.button = Button()
 
         # 调用私有方法创建精灵组
         self.__creat_sprites()
+
+        # 控制游戏暂停开始的按钮
+        # self.
 
 
     def start_game(self):
@@ -63,15 +69,17 @@ class PlaneGame(object):
     def __check_event(self):
         """事件监听"""
         for event in pygame.event.get():
-            # print(event)
+            print(event)
             check_KEY(self.hero1, self.hero2, self.hero3,  self.enemy,
                       event, self.enemy_group, self.BGM, self.button)
+            check_mouse(event, self.button)
 
-            # 主战机跟随鼠标移动
-            if event.type == pygame.MOUSEMOTION and self.life2 > 0:
-                (x,y) = pygame.mouse.get_pos()
-                self.hero2.rect.centerx= x
-                self.hero2.rect.centery = y
+            # 游戏开始时候，主战机再跟随鼠标移动
+            if self.button.pause_game % 2 == 0:
+                if event.type == pygame.MOUSEMOTION and self.life2 > 0:
+                    (x,y) = pygame.mouse.get_pos()
+                    self.hero2.rect.centerx= x
+                    self.hero2.rect.centery = y
 
 
     def __check_collide(self):
@@ -121,9 +129,17 @@ class PlaneGame(object):
 
     def __update_sprites(self):
         '''更新精灵组'''
-        for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero_group3, self.hero1.bullets, self.hero2.bullets, self.hero3.bullets, self.enemy_group, self.enemy.bullets, ]:
-            group.draw(self.screen)
-            group.update()
+        if self.button.pause_game % 2 != 0:
+            for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero_group3, self.hero1.bullets, self.hero2.bullets, self.hero3.bullets, self.enemy_group, self.enemy.bullets,]: 
+                group.draw(self.screen)
+                self.button.update()
+                self.screen.blit(self.button.image,(self.button.rect.x,self.button.rect.y))
+        elif self.button.pause_game % 2 == 0:
+            for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero_group3, self.hero1.bullets, self.hero2.bullets, self.hero3.bullets, self.enemy_group, self.enemy.bullets,]:
+                group.draw(self.screen)
+                group.update()
+                self.button.update()
+                self.screen.blit(self.button.image,(self.button.rect.x,self.button.rect.y))
 
     def show_life(self):
         '''显示字体'''

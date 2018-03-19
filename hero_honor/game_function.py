@@ -53,8 +53,6 @@ def check_KEYDOWN(hero1, hero2, hero3,enemy, event, enemy_group, BGM, button):
     elif event.key == pygame.K_s:
         hero2.moving_down = True
 
-    # elif event.key == pygame.K_j:
-    #     hero2.is_fire = True
 
     elif event.key == pygame.K_q:
         exit()
@@ -104,10 +102,16 @@ def check_KEY(hero1, hero2, hero3, enemy, event, enemy_group, BGM, button):
         new_enemy = Enemy()
         enemy_group.add(new_enemy)
     elif event.type == HERO_FIRE_EVENT:
-        hero1.fire()
-        hero2.fire()
+        if hero1.time_count > 0:
+            hero1.fire()
+            hero2.fire()
     elif event.type == WING_FIRE_EVENT:
-        hero3.fire()
+        if hero3.time_count > 0:
+            hero3.fire()
 
 
-
+def check_mouse(event, button):
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        mouse_x,mouse_y = pygame.mouse.get_pos()
+        if button.rect.collidepoint(mouse_x,mouse_y):
+            button.pause_game += 1
