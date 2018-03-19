@@ -6,12 +6,13 @@ from game_function import check_mouse
 from pygame.font import *
 from Tools import *
 
-# 显示中文歌曲名
-# encoding='GBK'
-
 
 class PlaneGame(object):
-    '''主游戏类'''
+    '''
+    主游戏类,实现双玩家，僚机，音乐暂停开始，游戏暂停开始，积分板，隐藏鼠标等功能。
+
+    '''
+
 
     def __init__(self):
         # 创建游戏屏幕
@@ -75,7 +76,7 @@ class PlaneGame(object):
             check_mouse(event, self.button)
 
             # 游戏开始时候，主战机再跟随鼠标移动
-            if self.button.pause_game % 2 == 0:
+            if self.button.pause_game % 2 == 0 and self.button.count_mouse % 2 == 0:
                 if event.type == pygame.MOUSEMOTION and self.life2 > 0:
                     (x,y) = pygame.mouse.get_pos()
                     self.hero2.rect.centerx= x
@@ -129,11 +130,13 @@ class PlaneGame(object):
 
     def __update_sprites(self):
         '''更新精灵组'''
+
         if self.button.pause_game % 2 != 0:
             for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero_group3, self.hero1.bullets, self.hero2.bullets, self.hero3.bullets, self.enemy_group, self.enemy.bullets,]: 
                 group.draw(self.screen)
                 self.button.update()
                 self.screen.blit(self.button.image,(self.button.rect.x,self.button.rect.y))
+
         elif self.button.pause_game % 2 == 0:
             for group in [self.back_group, self.hero_group1, self.hero_group2, self.hero_group3, self.hero1.bullets, self.hero2.bullets, self.hero3.bullets, self.enemy_group, self.enemy.bullets,]:
                 group.draw(self.screen)

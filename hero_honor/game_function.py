@@ -1,8 +1,5 @@
 import pygame
 from plane_sprites import *
-# from plane_sprites import Bullet_Hero
-# from plane_sprites import Bullet_Enemy
-# from plane_sprites import Enemy
 
 def check_KEYDOWN(hero1, hero2, hero3,enemy, event, enemy_group, BGM, button):
 
@@ -22,7 +19,7 @@ def check_KEYDOWN(hero1, hero2, hero3,enemy, event, enemy_group, BGM, button):
         else:
             BGM.unpause_music()
         
-
+    # 主玩家的移动监测
     if event.key == pygame.K_RIGHT :
         hero1.moving_right = True
         hero3.moving_right = True
@@ -40,7 +37,7 @@ def check_KEYDOWN(hero1, hero2, hero3,enemy, event, enemy_group, BGM, button):
         hero3.moving_down = True
 
 
-
+    # 副玩家的移动监测
     if event.key == pygame.K_d:
         hero2.moving_right = True
 
@@ -84,8 +81,6 @@ def check_KEYUP(hero1, hero2, hero3, event):
     elif event.key == pygame.K_s:
         hero2.moving_down = False
 
-    # elif event.key == pygame.K_j:
-    #     # hero2.is_fire = False
 
 
 def check_KEY(hero1, hero2, hero3, enemy, event, enemy_group, BGM, button):
@@ -98,13 +93,16 @@ def check_KEY(hero1, hero2, hero3, enemy, event, enemy_group, BGM, button):
     elif event.type == pygame.KEYUP:
         check_KEYUP(hero1, hero2, hero3, event)
 
-    elif event.type == CREAT_ENEMY_EVENT:
+    # 创造敌机事件
+    elif event.type == CREAT_ENEMY_EVENT and button.pause_game % 2 == 0:
         new_enemy = Enemy()
         enemy_group.add(new_enemy)
+
     elif event.type == HERO_FIRE_EVENT:
         if hero1.time_count > 0:
             hero1.fire()
             hero2.fire()
+            
     elif event.type == WING_FIRE_EVENT:
         if hero3.time_count > 0:
             hero3.fire()
@@ -112,6 +110,8 @@ def check_KEY(hero1, hero2, hero3, enemy, event, enemy_group, BGM, button):
 
 def check_mouse(event, button):
     if event.type == pygame.MOUSEBUTTONDOWN:
+    # 检测鼠标点击
         mouse_x,mouse_y = pygame.mouse.get_pos()
+        # 鼠标点击到按钮
         if button.rect.collidepoint(mouse_x,mouse_y):
             button.pause_game += 1
